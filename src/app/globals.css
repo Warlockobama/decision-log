@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Dark utilities are class-gated, not driven by the OS, so the theme can't
+   half-flip (the chart colors below are fixed). Light-first by design. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Type */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Semantic palette — components reference these instead of raw neutrals,
+     so the look is centralized. */
+  --color-canvas: #f7f7f9; /* page background */
+  --color-surface: #ffffff; /* cards */
+  --color-surface-muted: #f4f4f6; /* inset chips */
+  --color-border: #e6e6ea;
+  --color-ink: #1b1b1f; /* primary text */
+  --color-muted: #6c6c78; /* secondary text */
+  --color-faint: #9a9aa6; /* tertiary text */
+
+  --color-accent: #4f46e5; /* indigo-600 */
+  --color-accent-hover: #4338ca;
+  --color-accent-soft: #eef2ff;
+
+  --color-over: #d97706; /* overconfident — amber */
+  --color-under: #0284c7; /* underconfident — sky */
+  --color-yes: #059669; /* happened — emerald */
+  --color-no: #e11d48; /* didn't — rose */
+
+  --shadow-card: 0 1px 2px rgba(16, 16, 24, 0.04),
+    0 1px 3px rgba(16, 16, 24, 0.06);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-canvas);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+/* Range slider — themed accent so the probability control feels intentional. */
+input[type="range"] {
+  accent-color: var(--color-accent);
 }
